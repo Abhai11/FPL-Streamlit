@@ -60,6 +60,8 @@ st.write("""
 """)
 
 league_id = st.text_input('Enter your league ID: ')
-league_data = get_classic_league_standings(league_id)
+if league_id is not None:
+    league_data = get_classic_league_standings(league_id)
+
 if league_data is not None:
     st.write('League Name: ', league_data.get_league_name())
