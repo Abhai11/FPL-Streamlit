@@ -38,17 +38,21 @@ class Mini_League:
 
 
 def get_classic_league_standings(league_code):
-    league_standing_api_url = f'https://fantasy.premierleague.com/api/leagues-classic/{league_code}/standings'
-    league_data = requests.get(league_standing_api_url).json()
-    league_name = league_data['league']['name']
-    league_standings = league_data['standings']['results']
+    try:
+        league_standing_api_url = f'https://fantasy.premierleague.com/api/leagues-classic/{league_code}/standings'
+        league_data = requests.get(league_standing_api_url).json()
+        league_name = league_data['league']['name']
+        league_standings = league_data['standings']['results']
 
-    players = []
-    for standing in league_standings:
-        player_data = Player(standing['entry_name'], standing['rank'],
-                             standing['total'], standing['last_rank'], standing['entry'])
-        players.append(player_data)
-    return Mini_League(league_name, players)
+        players = []
+        for standing in league_standings:
+            player_data = Player(standing['entry_name'], standing['rank'],
+                                 standing['total'], standing['last_rank'], standing['entry'])
+            players.append(player_data)
+        return Mini_League(league_name, players)
+    except Exception:
+        st.write('Unable to fetch league info. Verify the league id')
+        return None
 
 
 st.write("""
@@ -57,4 +61,5 @@ st.write("""
 
 league_id = st.text_input('Enter your league ID: ')
 league_data = get_classic_league_standings(league_id)
-st.write('League Name: ', league_data.get_league_name())
+if league_data is not None:
+    st.write('League Name: ', league_data.get_league_name())
