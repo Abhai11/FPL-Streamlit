@@ -144,7 +144,7 @@ if league_id is not None and league_id != '':
     league_data = get_classic_league_standings(league_id)
     if league_data is not None:
         st.write('League Name: ', league_data.get_league_name())
-        st.write('Number of players: ', league_data.getPlayers().len())
+        st.write('Number of players: ', len(league_data.getPlayers()))
         gw_data = get_static_event_data()
         player_total_scores = {}
         plt = get_horizontal_bar_chart(
